@@ -32,6 +32,17 @@ namespace SourcetrailDotnetIndexer
         };
 
         /// <summary>
+        /// Returns the namespace of the provided type.
+        /// If it does not have a namespace it returns "__GLOBAL__".
+        /// </summary>
+        /// <param name="type">The type for which to get the namespace</param>
+        /// <returns></returns>
+        public static string GetTypeNamespace(Type type)
+        {
+            return !string.IsNullOrEmpty(type.Namespace) ? type.Namespace : "__GLOBAL__";
+        }
+
+        /// <summary>
         /// Returns the shortened name of some well-known types.
         /// <para></para>Returns the "prettified" full name for all other types.
         /// <param name="type">The type for which to get the name</param>
@@ -54,7 +65,7 @@ namespace SourcetrailDotnetIndexer
             var genericArguments = type.GetGenericArguments();
             var typeDefeninition = type.IsGenericParameter || nameOnly
                 ? type.Name
-                : type.Namespace + "." + (type.DeclaringType != null ? type.DeclaringType.Name + "." : "") + type.Name;
+                : GetTypeNamespace(type) + "." + (type.DeclaringType != null ? type.DeclaringType.Name + "." : "") + type.Name;
             if (genericArguments.Length == 0 || typeDefeninition.IndexOf("`") < 0)
             {
                 return typeDefeninition;
