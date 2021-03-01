@@ -119,7 +119,10 @@ namespace SourcetrailDotnetIndexer
                 }
             }
             sb.Append("] }");
-            return sb.ToString();
+
+            byte[] nameBytes = Encoding.UTF8.GetBytes(sb.ToString());
+
+            return Encoding.Default.GetString(nameBytes, 0, nameBytes.Length);
         }
     }
 }
